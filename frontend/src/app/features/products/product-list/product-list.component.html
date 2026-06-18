@@ -1,0 +1,46 @@
+<div class="page">
+  <header class="page-header">
+    <h1>Products</h1>
+    <a class="btn btn-primary" routerLink="/products/new">+ New product</a>
+  </header>
+
+  @if (loading()) {
+    <p>Loading...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  @if (!loading() && products().length === 0 && !errorMessage()) {
+    <p>No products yet. Create the first one.</p>
+  }
+
+  @if (products().length > 0) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.id) {
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description || '-' }}</td>
+            <td>{{ product.price | number: '1.2-2' }}</td>
+            <td>{{ product.quantity }}</td>
+            <td class="actions">
+              <a class="btn btn-small" [routerLink]="['/products', product.id, 'edit']">Edit</a>
+              <button class="btn btn-small btn-danger" type="button" (click)="deleteProduct(product)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
